@@ -1,58 +1,56 @@
-import { StatusBar } from 'expo-status-bar';
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, Image, Button, TextInput, TextComponent} from 'react-native';
+import { StatusBar } from "expo-status-bar";
+import React, { useState } from "react";
+import { StyleSheet, View, Button, FlatList } from "react-native";
+import GoalItem from "./components/GoalItem";
+import GoalInput from "./components/GoalInput";
 
-export default function App() { 
-  const [outputText,setOutputText] = useState('Pulsa para empezar a contar');
-  const [contador,setcontador] = useState(0)
-  const [text, setInputText] = useState('')
-  
-  const sumar = function(){
-  setcontador(contador + parseInt(text))
-  setOutputText('el numero es '+ contador)
+export default function App() {
+  const [courseGoals, setCoursegoals] = useState([]);
+  const [isAddMode, setIsAddMode] = useState(false);
+
+  const addGoalHandler = (goalTitle) => {
+    setCoursegoals((currentGoals) => [
+      ...currentGoals,
+      { id: Math.random().toString(), value: goalTitle },
+    ]);
+    setIsAddMode(false);
+  };
+  const removeGoalHandler = (goalId) => {
+    setCoursegoals((currentGoals) => {
+      return currentGoals.filter((goal) => goal.id !== goalId);
+    });
   };
 
-
-  const reset = function(){
-  setcontador(0)
-  setOutputText('Pulsa para empezar a contar')
-  setInputText()
-  
-  
+  const cancelGoalAdditionHandler = () => {
+    setIsAddMode(false);
   };
-
-  const props = 
-  {
-    keyboardType:"numeric",
-    placeholder:'numero a sumar',
-    textAlign:'center',
-    className:"texto",
-    clearButtonMode:"while-editing",
-  }
-  
-
   return (
-   <View style={styles.container}>
-     <Text alignItems='center'>{outputText}</Text>
-    <TextInput onChangeText={text => setInputText(text)}
-      {...props}
-      value={text}
-    > 
-    </TextInput>
-     <Button title="sumar" onPress={sumar}/>
-     <Button title="reset" onPress={reset}/>
-   </View>
+    <View style={styles.screen}>
+      <Button title="add new goal" onPress={() => setIsAddMode(true)} />
+      <GoalInput
+        onAddGoal={addGoalHandler}
+        visible={isAddMode}
+        onCancel={cancelGoalAdditionHandler}
+      />
+      <View style={{ marginVertical: 10 }}>
+        <FlatList
+          keyExtractor={(item, index) => item.id}
+          data={courseGoals}
+          renderItem={(itemData) => (
+            <GoalItem
+              id={itemData.item.id}
+              title={itemData.item.value}
+              onDelete={removeGoalHandler}
+            />
+          )}
+        />
+      </View>
+    </View>
   );
 }
 
-
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal:40,
+  screen: {
+    padding: 50,
   },
-  
 });
