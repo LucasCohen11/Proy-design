@@ -1,56 +1,70 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
-import { StyleSheet, View, Button, FlatList } from "react-native";
-import GoalItem from "./components/GoalItem";
-import GoalInput from "./components/GoalInput";
+import { StyleSheet, View, FlatList } from "react-native";
+import {
+  DefaultTheme,
+  Appbar,
+  Provider as PaperProvider,
+  Text,
+  Button,
+} from "react-native-paper";
+import Gradient from "./components/Gradient";
 
 export default function App() {
-  const [courseGoals, setCoursegoals] = useState([]);
-  const [isAddMode, setIsAddMode] = useState(false);
-
-  const addGoalHandler = (goalTitle) => {
-    setCoursegoals((currentGoals) => [
-      ...currentGoals,
-      { id: Math.random().toString(), value: goalTitle },
-    ]);
-    setIsAddMode(false);
-  };
-  const removeGoalHandler = (goalId) => {
-    setCoursegoals((currentGoals) => {
-      return currentGoals.filter((goal) => goal.id !== goalId);
-    });
+  const theme = {
+    ...DefaultTheme,
+    roundness: 2,
+    colors: {
+      ...DefaultTheme.colors,
+      primary: "#A098F3",
+      accent: "#FFDEDA",
+    },
   };
 
-  const cancelGoalAdditionHandler = () => {
-    setIsAddMode(false);
-  };
   return (
-    <View style={styles.screen}>
-      <Button title="add new goal" onPress={() => setIsAddMode(true)} />
-      <GoalInput
-        onAddGoal={addGoalHandler}
-        visible={isAddMode}
-        onCancel={cancelGoalAdditionHandler}
-      />
-      <View style={{ marginVertical: 10 }}>
-        <FlatList
-          keyExtractor={(item, index) => item.id}
-          data={courseGoals}
-          renderItem={(itemData) => (
-            <GoalItem
-              id={itemData.item.id}
-              title={itemData.item.value}
-              onDelete={removeGoalHandler}
-            />
-          )}
-        />
+    <PaperProvider theme={theme}>
+      <Gradient style={styles.screen}></Gradient>
+      <View style={styles.dock}>
+        <Button mode="contained" style={styles.btn}>
+          Registrarse
+        </Button>
+        <Button mode="outlined" style={styles.btn}>
+          iniciar sesión
+        </Button>
       </View>
-    </View>
+      {/* <Appbar style={styles.bottom}>
+        <Appbar.Action
+          icon="home"
+          onPress={() => console.log("boton presionado")}
+        />
+      </Appbar> */}
+    </PaperProvider>
   );
 }
 
 const styles = StyleSheet.create({
   screen: {
     padding: 50,
+
+    justifyContent: "center",
+    alignContent: "center",
+  },
+  bottom: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: "center",
+  },
+  dock: {
+    backgroundColor: "white",
+    flex: 0.5,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  btn: {
+    marginBottom: 10,
+    marginTop: 10,
+    width: "81%",
   },
 });
