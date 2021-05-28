@@ -1,7 +1,8 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 const Gradient = () => {
+  let cantRosa = 1.7;
   return (
     <View style={styles.container}>
       <LinearGradient
@@ -17,7 +18,7 @@ const Gradient = () => {
           angle={184.82}
           locations={[0.013, 1]}
           start={{ x: 0, y: -0.01 }}
-          end={{ x: 0, y: 1 }}
+          end={{ x: 0, y: cantRosa }}
           style={styles.gradient2}
         ></LinearGradient>
       </LinearGradient>
@@ -48,8 +49,8 @@ const styles = StyleSheet.create({
   },
   gradient2: {
     top: 0,
-    right: 0,
     bottom: 0,
+    right: 0,
     left: 0,
     position: "absolute",
     height: "100%",
