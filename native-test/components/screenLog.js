@@ -1,4 +1,3 @@
-import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 import {
   StyleSheet,
@@ -26,21 +25,11 @@ import SingleNote from "./assets/Drawings/SingleNote.svg";
 import DoubleNote from "./assets/Drawings/doubleNote.svg";
 import SingleStar from "./assets/Drawings/StarSingle.svg";
 import DoubleStar from "./assets/Drawings/StarDouble.svg";
-export default function App() {
+const screenLog = () => {
   const height = Dimensions.get("screen").height;
   const width = Dimensions.get("screen").width;
-  const theme = {
-    ...DefaultTheme,
-    roundness: 2,
-    colors: {
-      ...DefaultTheme.colors,
-      primary: "#A098F3",
-      accent: "#FFDEDA",
-    },
-  };
-
   return (
-    <PaperProvider theme={theme}>
+    <PaperProvider>
       <Gradient></Gradient>
 
       <View style={styles.dock}>
@@ -130,7 +119,7 @@ export default function App() {
       />
     </PaperProvider>
   );
-}
+};
 
 const styles = StyleSheet.create({
   screen: {
@@ -181,3 +170,5 @@ const styles = StyleSheet.create({
   Line: { position: "absolute", top: -10, right: 0, left: 0, bottom: 0 },
   star: {},
 });
+
+export default screenLog;
